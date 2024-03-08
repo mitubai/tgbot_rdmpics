@@ -8,16 +8,16 @@ load_dotenv()
 bot = Bot(token=getenv("BOT_TOKEN"))
 dp = Dispatcher()
 
-
+from bot import bot, dp
 from handlers.start import start_router
 from handlers.myinfo import myinfo_router
-from handlers.pic import pic_router
+from handlers.pic import picture_router
 
 
 async def main():
     dp.include_router(start_router)
     dp.include_router(myinfo_router)
-    dp.include_router(pic_router)
+    dp.include_router(picture_router)
     await dp.start_polling(bot)
 
 

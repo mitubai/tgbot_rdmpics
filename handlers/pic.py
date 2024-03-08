@@ -1,18 +1,17 @@
-from aiogram import types, Dispatcher, Router
+import random
+from aiogram import Router, types
 from aiogram.filters import Command
 import logging
-import random
-from os import listdir, path
-
-pic_router = Router()
+from pathlib import Path
 
 
-@pic_router.message(Command("pic"))
-async def pic(message: types.Message):
-    image_directory = 'Images'
-    file_name = random.choice(listdir(image_directory))
-    file_path = path.join(image_directory, file_name)
+picture_router = Router()
+
+
+@picture_router.message(Command("pic"))
+async def send_pic(message: types.Message):
+    file_name = random.choice(list((Path(__file__).parent.parent/"Images").iterdir()))
+    file_path = Path(__file__).parent.parent / "Images" / file_name
     logging.info(file_path)
-    file = types.InputFile(file_path)
-    await message.answer_photo(file, caption="Котик")
-    await message.reply("Котик")
+    file = types.FSInputFile(file_path)
+    await message.answer_photo(file)
